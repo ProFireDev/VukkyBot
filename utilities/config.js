@@ -1,11 +1,41 @@
 const config = require("../config.json");
-
+require("dotenv").config();
+var mysql = require("mysql");
+var sql;
 module.exports = {
 	init: function() {
 		if (!config.misc.mysql) {
 			if (config.misc.remoteSettings) {
-				console.log("Error. remoteSettings enabled but mysql disabled! Shutting down!");
+				console.log("[cfg] Error. remoteSettings enabled but mysql disabled! Shutting down!");
 				process.exit(69);
+			} else {
+				console.log("[cfg] ready");
+			}
+			
+		} else {
+			if (config.misc.remoteSettings) {
+				
+				let con = mysql.createConnection({
+					host: process.env.SQL_HOST,
+					user: process.env.SQL_USER,
+					password: process.env.SQL_PASS,
+					database: process.env.SQL_DB
+				});
+		
+				sql = "CREATE TABLE settings (option VARCHAR(255), value VARCHAR(255), id INT AUTO_INCREMENT PRIMARY KEY)";
+				con.query(sql, function (err, result) {
+					if (err) {
+						if(err.code == "ER_TABLE_EXISTS_ERROR") {
+							console.log("[cfg] Table already exists");
+						} else {
+							console.log("[cfg] Table creation failed. probably already exists");
+						}
+					} else {
+						console.log("[cfg] Table created");
+					}
+				});
+				con.end();
+				console.log("[cfg] ready");
 			}
 		}
 	},
@@ -21,7 +51,22 @@ module.exports = {
 		if (!config.misc.remoteSettings) {
 			return eval(`config.${optionName}`);
 		} else {
-			console.log(true);
+			let con = mysql.createConnection({
+				host: process.env.SQL_HOST,
+				user: process.env.SQL_USER,
+				password: process.env.SQL_PASS,
+				database: process.env.SQL_DB
+			});
+	
+			sql = `SELECT * FROM settings WHERE option = ${optionName}`;
+			con.query(sql, function (err, result) {
+				if (err) {
+					console.log("fuck");
+					console.log(err);
+				} else {
+					console.log(result);
+				}
+			});
 		}
 	}
 };
