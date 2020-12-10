@@ -6,8 +6,8 @@
     "giveaways",
     "vukky"
   ],
-  "website": "https://vukky123.github.io/vukkybot",
-  "repository": "https://github.com/Vukky123/VukkyBot",
+  "website": "https://vukkyltd.github.io/vukkybot",
+  "repository": "https://github.com/VukkyLtd/VukkyBot",
   "env": {
     "BOT_TOKEN": {
       "description": "The token for your VukkyBot. Not your client secret!"

@@ -1,4 +1,3 @@
-const config = require("../config.json");
 require("dotenv").config();
 var mysql = require("mysql");
 const { errorEmbed, successEmbed } = require("../utilities/embeds");

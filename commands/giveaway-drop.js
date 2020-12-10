@@ -1,5 +1,5 @@
 const embeds = require("../utilities/embeds");
-const config = require("../config.json");
+const config = require("../utilities/config.js");
 var specialCode;
 var specialCodeContents;
 
@@ -86,7 +86,7 @@ module.exports = {
 		if (message.member.permissions.has("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Drop Permissions")) {
 			if (message.mentions.channels.size !== 0) {
 				if (args.slice(2).join(" ")) {
-					if(config.commands.giveawaydrop.codes == true) {
+					if(config.get("commands.giveawaydrop.codes") == true) {
 						message.channel.send(embeds.inputEmbed("Does ths drop have a special code?"))
 							.then(checkmessage => {
 								checkmessage.react("👍").then(() => checkmessage.react("👎"));

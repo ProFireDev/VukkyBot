@@ -10,7 +10,8 @@
         ],
         "mysql": true,
         "language": "en",
-        "languageComment": "Currently, only English (en) and Finnish (fi) is supported."
+        "languageComment": "Currently, only English (en) and Finnish (fi) is supported.",
+        "remoteSettings": false
     },
     "counting": {
         "enabled": true,

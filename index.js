@@ -12,11 +12,13 @@ const pjson = require("./package.json");
 const embeds = require("./utilities/embeds");
 const config = require("./config.json");
 const vukkytils = require("./utilities/vukkytils");
+const configjs = require("./utilities/config.js");
 const format = require("util").format;
 const prefix = process.env.PREFIX;
 client.commands = new Discord.Collection();
 let updateRemindedOn = null;
 
+configjs.init();
 const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
 let embedPermissions = 1;
 
@@ -81,6 +83,7 @@ client.once("ready", () => {
 			checkUpdates();
 		}, 7200000);
 	}
+
 });
 
 function checkUpdates() {

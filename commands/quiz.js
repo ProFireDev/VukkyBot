@@ -8,7 +8,7 @@ module.exports = {
 	execute(message, args) {
 		console.log("Let's play a quiz!");
 		const quiz = require("./quiz.json");
-		const config = require("../config.json");
+		const config = require("../utilities/config.js");
 		const item = quiz[Math.floor(Math.random() * quiz.length)];
 		const filter = response => {
 			return item.answers.some(answer => answer.toLowerCase() === response.content.toLowerCase());
