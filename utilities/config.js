@@ -90,8 +90,9 @@ module.exports = {
 					if (result[0].cfg == "misc.owner") {
 						let finalArray = [];
 						for (let i = 0; i < result.length; i++) {
-							finalArray.push(result[i].cfgvalue);
+							finalArray[i] = (result[i].cfgvalue);
 						}
+						console.log(finalArray);
 						return finalArray;
 					} else {
 						return result.cfgvalue;
