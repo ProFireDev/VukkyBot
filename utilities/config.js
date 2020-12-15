@@ -59,28 +59,43 @@ module.exports = {
 				database: process.env.SQL_DB
 			});
 	
-			sql = `SELECT * FROM settings WHERE cfg = ${optionName}`;
+			sql = `SELECT * FROM settings WHERE cfg = "${optionName}"`;
 			con.query(sql, function (err, result) {
-				if (err) {
-					console.log("fuck");
-					console.log(err);
+				if (result.length == 0) {
+					console.log("config option doesnt exist, creting it.");
+
 					if (optionName != "misc.owner") {
-						sql = `INSERT INTO settings(cfg, cfgvalue) VALUES (${optionName}, ${eval(`config.${optionName}`)})`;
+						sql = `INSERT INTO settings(cfg, cfgvalue) VALUES ("${optionName}", !${eval(`config.${optionName}`)}!)`;
 						
+						con.query(sql, function (err, result) {
+							if (err) {
+								console.log("fuck");
+								console.log(err);
+							}
+						});
 					} else {
-						
-						sql = `INSERT INTO settings(cfg, cfgvalue) VALUES (${optionName}, "${eval(`config.${optionName}`)}")`;
-					}
-					con.query(sql, function (err, result) {
-						if (err) {
-							console.log("fuck");
-							console.log(err);
-						} else {
-							console.log(result);
+						for (let i = 0; i < config.misc.owner.length; i++) {
+							
+							sql = `INSERT INTO settings(cfg, cfgvalue) VALUES ("${optionName}", "${config.misc.owner[i]}")`;
+							
+							con.query(sql, function (err, result) {
+								if (err) {
+									console.log("fuck");
+									console.log(err);
+								}
+							});
 						}
-					});
+					}
 				} else {
-					console.log(result);
+					if (result[0].cfg == "misc.owner") {
+						let finalArray = [];
+						for (let i = 0; i < result.length; i++) {
+							finalArray.push(result[i].cfgvalue);
+						}
+						return finalArray;
+					} else {
+						return result.cfgvalue;
+					}
 				}
 			});
 		}
