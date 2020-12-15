@@ -22,13 +22,14 @@ module.exports = {
 					database: process.env.SQL_DB
 				});
 		
-				sql = "CREATE TABLE settings (option VARCHAR(255), value VARCHAR(255), id INT AUTO_INCREMENT PRIMARY KEY)";
+				sql = "CREATE TABLE settings (cfg VARCHAR(255), cfgvalue VARCHAR(255))";
 				con.query(sql, function (err, result) {
 					if (err) {
 						if(err.code == "ER_TABLE_EXISTS_ERROR") {
 							console.log("[cfg] Table already exists");
 						} else {
-							console.log("[cfg] Table creation failed. probably already exists");
+							console.log(err);
+							console.log("[cfg] Table creation failed.");
 						}
 					} else {
 						console.log("[cfg] Table created");
@@ -58,11 +59,26 @@ module.exports = {
 				database: process.env.SQL_DB
 			});
 	
-			sql = `SELECT * FROM settings WHERE option = ${optionName}`;
+			sql = `SELECT * FROM settings WHERE cfg = ${optionName}`;
 			con.query(sql, function (err, result) {
 				if (err) {
 					console.log("fuck");
 					console.log(err);
+					if (optionName != "misc.owner") {
+						sql = `INSERT INTO settings(cfg, cfgvalue) VALUES (${optionName}, ${eval(`config.${optionName}`)})`;
+						
+					} else {
+						
+						sql = `INSERT INTO settings(cfg, cfgvalue) VALUES (${optionName}, "${eval(`config.${optionName}`)}")`;
+					}
+					con.query(sql, function (err, result) {
+						if (err) {
+							console.log("fuck");
+							console.log(err);
+						} else {
+							console.log(result);
+						}
+					});
 				} else {
 					console.log(result);
 				}

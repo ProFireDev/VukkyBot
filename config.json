@@ -11,7 +11,7 @@
         "mysql": true,
         "language": "en",
         "languageComment": "Currently, only English (en) and Finnish (fi) is supported.",
-        "remoteSettings": false
+        "remoteSettings": true
     },
     "counting": {
         "enabled": true,
