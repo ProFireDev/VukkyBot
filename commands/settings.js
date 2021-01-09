@@ -8,7 +8,7 @@ module.exports = {
 	botPermissions: ["EMBED_LINKS"],
 	userPermissions: ["ADMINISTRATOR"],
 	cooldown: 0,
-	execute(message, args) {
-		
+	async execute(message, args) {
+		message.channel.send(await config.get(args[0]));
 	},
 };

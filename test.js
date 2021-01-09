@@ -1,4 +1,8 @@
 
 const cfg = require("./utilities/config.js");
-
-console.log(cfg.get("misc.owner"));
+async function tester() {
+	cfg.init();
+	console.log(await cfg.get("misc.owner"));
+	cfg.set("misc.owner", )
+}
+tester();
