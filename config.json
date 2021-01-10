@@ -11,7 +11,11 @@
         "mysql": true,
         "language": "en",
         "languageComment": "Currently, only English (en) and Finnish (fi) is supported.",
-        "remoteSettings": true
+        "remoteSettings": true,
+        "emoji": {
+            "error": "<:error:759701620777943062>",
+            "loading": "<a:offlinegif:757979855924101220>"
+        }
     },
     "counting": {
         "enabled": true,

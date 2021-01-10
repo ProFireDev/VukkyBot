@@ -90,7 +90,7 @@ function checkUpdates() {
 	fetch("https://raw.githubusercontent.com/VukkyLtd/VukkyBot/master/package.json")  
 		.then(res => res.json())
 		.then(json => {
-			if (json.version < pjson.version && updateRemindedOn !== json.version) {
+			if (json.version > pjson.version && updateRemindedOn !== json.version) {
 				console.log(`${warn("Update available!")}`);
 				updateRemindedOn = json.version;
 				if (config.updateChecker.dmOwner) {
@@ -120,6 +120,8 @@ client.on("message", message => {
 
 	const args = message.content.slice(prefix.length).split(/ +/);
 	const commandName = args.shift().toLowerCase();
+
+	if (commandName == "") return;
 
 	const command = client.commands.get(commandName)
 		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -164,6 +166,7 @@ client.on("message", message => {
 		}
 	}
 
+	// TODO: Remove dcPermissions
 	if (command.dcPermissions) {
 		console.log(`[permcheck] ${warn(`${prefix}${commandName} - dcPermissions is deprecated. Use botPermissions instead.`)}`);
 		tempPermissionsBot(command.dcPermissions);
@@ -177,7 +180,7 @@ client.on("message", message => {
 				break;
 			}
 			if ((message.channel.type == "text" && !message.member.hasPermission(command.userPermissions[i]))) {
-				let reply = format(vukkytils.getString("BOT_PERMISSION_NEEDED"), command.userPermissions[i]);
+				let reply = format(vukkytils.getString("USER_PERMISSION_NEEDED"), command.userPermissions[i]);
 				if (embedPermissions == 0) return message.channel.send(reply);
 				message.channel.send(embeds.errorEmbed(reply));
 				return;
