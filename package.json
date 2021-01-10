@@ -4,13 +4,22 @@
   "description": "VukkyBot",
   "main": "index.js",
   "dependencies": {
+    "autoprefixer": "^10.2.1",
     "chalk": "^4.1.0",
     "comma-number": "^2.0.1",
+    "cross-env": "^7.0.3",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "mysql": "^2.18.1",
-    "pm2": "^4.5.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.1-security",
+    "mysql": "^2",
+    "pm2": "^4.5.1",
+    "postcss": "^8.2.4",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.0",
+    "tailwindcss": "^2.0.2",
     "twitter": "^1.7.1",
+    "url": "^0.11.0",
     "vukkyutils": "^2.1.0"
   },
   "devDependencies": {
@@ -21,12 +30,14 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js --name VukkyBot -- --color && pm2 log",
-    "stop": "pm2 del VukkyBot",
-    "restart": "pm2 restart VukkyBot && pm2 log",
+    "start": "pm2 start index.js --name VukkyBot -- --color && pm2 start webpanel.js --name VukkyBotDashBoard -- --color && pm2 log",
+    "stop": "pm2 del VukkyBot && pm2 del VukkyBotDashBoard",
+    "restart": "pm2 restart VukkyBot && pm2 restart VukkyBotDashBoard && pm2 log",
     "setup": "node setup.js",
     "lint": "npx eslint **/*.js",
-    "lintfix": "npx eslint **/*.js --fix"
+    "lintfix": "npx eslint **/*.js --fix",
+    "dashdev": "npx postcss dashboard/*.css -d dashboard/static/",
+    "dashprod": "cross-env NODE_ENV=production npx postcss dashboard/*.css -d dashboard/static/"
   },
   "repository": {
     "type": "git",

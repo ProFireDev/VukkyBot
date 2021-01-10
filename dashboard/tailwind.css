@@ -1,0 +1,14 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.home {
+    @apply font-sans text-center;
+}
+
+.button {
+    @apply whitespace-normal inline-flex items-center px-4 py-2 rounded-lg shadow-md text-black bg-white;
+}
+.button-blue {
+    @apply text-blue-500 hover:text-white hover:bg-blue-500;
+}
