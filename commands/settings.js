@@ -3,14 +3,16 @@ const config = require("../utilities/config.js");
 
 module.exports = {
 	name: "settings",
-	aliases: ["config", "conf", "cfg"],
 	description: "Change the settings of VukkyBot!",
 	botPermissions: ["EMBED_LINKS"],
 	userPermissions: ["ADMINISTRATOR"],
 	cooldown: 0,
+	aliases: ["config", "conf", "cfg"],
 	async execute(message, args) {
 		if(args[0] == "get") {
-			message.channel.send(await config.get(args[0]));
+			let result = await config.get(args[1]);
+			if(result == undefined) return message.channel.send(embeds.errorEmbed(`\`${args[1]}\` doesn't seem to exist!`));
+			message.channel.send(result);
 		}
 	},
 };
