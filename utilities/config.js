@@ -62,24 +62,71 @@ module.exports = {
 						con.query(sql, function (err, result) {
 							if (err) {
 								console.log(err);
-								con.end();
-							} else {
-								con.end();
 							}
 						});
+						
+						con.end();
+					} else {
+						sql = `DELETE FROM settings WHERE cfg = "${optionName}"`;
+						con.query(sql, function (err, result) {
+							if (err) {
+								console.log("Oopsie has happened!");
+								console.log(err);
+							}
+						});
+						for (let i = 0; i < value.length; i++) {
+								
+							sql = `INSERT INTO settings(cfg, cfgvalue) VALUES ("${optionName}", "${value[i]}")`;
+							
+							con.query(sql, function (err, result) {
+								if (err) {
+									console.log("fuck");
+									console.log(err);
+								}
+							});
+						}
+						
+						con.end();
 					}
 				} else {
-					sql = `INSERT INTO settings(cfg, cfgvalue) VALUES ("${optionName}", "${value}")`;
+					if(optionName != "misc.owner") {
+						sql = `INSERT INTO settings(cfg, cfgvalue) VALUES ("${optionName}", "${value}")`;
 							
-					con.query(sql, function (err, result) {
-						if (err) {
-							console.log("Oopsie has happened!");
-							console.log(err);
+						con.query(sql, function (err, result) {
+							if (err) {
+								console.log("Oopsie has happened!");
+								console.log(err);
+							}
+						});
+						
+						con.end();
+					} else {
+						
+						sql = `DELETE FROM settings WHERE cfg = "${optionName}"`;
+						con.query(sql, function (err, result) {
+							if (err) {
+								console.log("Oopsie has happened!");
+								console.log(err);
+							}
+						});
+						for (let i = 0; i < value.length; i++) {
+								
+							sql = `INSERT INTO settings(cfg, cfgvalue) VALUES ("${optionName}", "${value[i]}")`;
+							
+							con.query(sql, function (err, result) {
+								if (err) {
+									console.log("fuck");
+									console.log(err);
+								}
+							});
 						}
-					});
+						
+						con.end();
+					}
 				}
 			});
 		}
+		
 	},
 	get: async function(optionName) {
 		if (!config.misc.remoteSettings) {
