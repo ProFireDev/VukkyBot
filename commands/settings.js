@@ -9,6 +9,7 @@ module.exports = {
 	userPermissions: ["ADMINISTRATOR"],
 	cooldown: 0,
 	async execute(message, args) {
-		message.channel.send(await config.get(args[0]));
+		config.set(args[0], args[1]);
+		message.channel.send(`I set ${args[0]} to ${args[1]}!`);
 	},
 };
