@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My First OAuth2 App</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+</head>
+<body>
+	<div id="info">
+		Hoi!
+	</div>
+	<a id="login" style="display: block;" href="">Identify Yourself</a>
+	<script>
+		console.log("br?")
+            $.getJSON('./config.json', function (data) {
+			  console.log(data)
+			  document.getElementById("login").href = data.oauth_url
+
+        })
+	</script>
+</body>
+</html>
