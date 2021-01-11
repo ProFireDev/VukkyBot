@@ -34,7 +34,6 @@ http.createServer((req, res) => {
 				})
 					.then(discordRes => discordRes.json())
 					.then(info => {
-						console.log(info);
 						sessions[accessCode] = info;
 						return info;
 					})
@@ -46,8 +45,6 @@ http.createServer((req, res) => {
 					.then(userRes => userRes.json())
 					.then(userRes => {
 						if (isValidUser(userRes)) {
-						//infoJson = userRes;
-						//console.log(infoJson);
 							responseCode = 200;
 							content = fs.readFileSync("./dashboard/html/panel.html");
 							res.writeHead(responseCode, {

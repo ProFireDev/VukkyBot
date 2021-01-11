@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-<html class="home bg-gray-800">
+<html class="home bg-gray-800 text-white">
 	<head>
 		<title>VukkyBot Dashboard</title>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
 		<link rel="stylesheet" href="tailwind.css">
 	</head>
 	<body>
-		<div class="bg-gray-900 w-60 rounded-full h-20 m-8">
+		<div class="bg-gray-900 w-64 rounded-full h-20 m-8 flex whitespace-pre-line">
 			<img id="avatar" class="rounded-full align-middle h-20">
-			<p class="float-right text-white align-middle">test</p>
+			<p class="text-white align-middle m-auto" id="username">Loading...</p>
+			<p class="text-white align-middle m-auto" id="userid">Loading...</p>
 		</div>
 		<h1 id="loggedIn" class="text-3xl font-bold text-white">Loading...</h1>  
+		<div class="w-full flex flex-wrap whitespace-pre-line">
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
+				AAAAA
+			</div>
+			
+		</div>
 	</body>
 	<script>
 		function getQueryVariable(variable) {
@@ -65,6 +102,20 @@
 		})
 		function live() {
 			console.log(user)
+			if(user.premium_type == 2) {
+				document.getElementById("username").innerHTML = `${user.username}#${user.discriminator}\n${user.id}<img id="nitroBadge" src="https://discord.com/assets/386884eecd36164487505ddfbac35a9d.svg" class="">`
+			} else {
+				if(user.premium_type == 1) {
+
+					document.getElementById("username").innerHTML = `${user.username}#${user.discriminator}\n${user.id}\nNitro Classic`
+				} else {
+
+					document.getElementById("username").innerHTML = `${user.username}#${user.discriminator}\n${user.id}`
+				}
+			}
+
+
+			document.getElementById("userid").innerHTML = `` //future proofing with the string and not just variable lol (lazy) 
 			document.getElementById("loggedIn").innerHTML = `Hi, ${user.username}#${user.discriminator}!` 
 			document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
 		}
