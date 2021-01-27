@@ -92,14 +92,17 @@ http.createServer((req, res) => {
 			}
 		}
 	} else {
-		let body = "";
-		req.on("data", chunk => {
-			body += chunk.toString(); // convert Buffer to string
-		});
-		req.on("end", () => {
-			let sid = decodeReq(body);
-			res.end(JSON.stringify(sessions[sid]));
-		});
+		console.log(req);
+		if(req.url == "/gimmedata") {
+			let body = "";
+			req.on("data", chunk => {
+				body += chunk.toString(); // convert Buffer to string
+			});
+			req.on("end", () => {
+				let sid = decodeReq(body);
+				res.end(JSON.stringify(sessions[sid]));
+			});
+		}
 	}
 })
 	.listen(port);

@@ -12,44 +12,33 @@
 			<p class="text-white align-middle m-auto" id="userid">Loading...</p>
 		</div>
 		<h1 id="loggedIn" class="text-3xl font-bold text-white">Loading...</h1>  
-		<div class="w-full flex flex-wrap whitespace-pre-line">
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
-			<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line">
-				AAAAA
-			</div>
+		<div class="w-full flex flex-wrap whitespace-pre-line" id="options">
+		
 			
 		</div>
 	</body>
 	<script>
+
+		class stringConfig {
+			constructor(currentValue, configName) {
+				this.currentValue = currentValue;
+				this.configName = configName;
+				document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="text" class="text-black" value="${currentValue}"></input></div>`
+			}
+		}
+		class booleanConfig {
+			constructor(currentValue, configName) {
+				this.currentValue = currentValue;
+				this.configName = configName;
+				if(currentValue) {
+					document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="checkbox" class="text-black w-5 h-5" checked></input></div>`
+				} else {
+					console.log("haha no1")
+					document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="checkbox" class="text-black w-5 h-5"></input></div>`
+				}
+			}
+		}
+
 		function getQueryVariable(variable) {
 			var query = window.location.search.substring(1);
 			var vars = query.split("&");
@@ -118,6 +107,8 @@
 			document.getElementById("userid").innerHTML = `` //future proofing with the string and not just variable lol (lazy) 
 			document.getElementById("loggedIn").innerHTML = `Hi, ${user.username}#${user.discriminator}!` 
 			document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
+			new stringConfig("pp", "counting.channelName");
+			new booleanConfig(true, "counting.enabled");
 		}
 	</script>
 </html>
