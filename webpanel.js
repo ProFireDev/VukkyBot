@@ -34,7 +34,10 @@ http.createServer((req, res) => {
 				})
 					.then(discordRes => discordRes.json())
 					.then(info => {
-						sessions[accessCode] = info;
+						sessions[accessCode] = {};
+						sessions[accessCode].active = true;
+						sessions[accessCode].info = info;
+						
 						return info;
 					})
 					.then(info => fetch("https://discord.com/api/users/@me", {
@@ -103,7 +106,39 @@ http.createServer((req, res) => {
 				res.end(JSON.stringify(sessions[sid]));
 			});
 		}
+		if(req.url == "/set") {
+			
+			let body = "";
+			req.on("data", chunk => {
+				body += chunk.toString(); // convert Buffer to string
+			});
+			req.on("end", () => {
+				let sid = decodeReq(body);
+				if(sessions[sid].active) {
+					console.log("valid set request!");
+				}
+				res.end();
+			});
+		}
+		
+		if(req.url == "/get") {
+			
+			let body = "";
+			req.on("data", chunk => {
+				body += chunk.toString(); // convert Buffer to string
+			});
+			req.on("end", () => {
+				let sid = decodeReq(body);
+				if(sessions[sid].active) {
+					console.log("valid set request!");
+				}
+				res.end();
+			});
+		}
 	}
+	res.on("close", args => {
+		console.log("disconnect! " + args);
+	});
 })
 	.listen(port);
 function isValidUser(user) {
