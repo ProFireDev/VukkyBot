@@ -77,7 +77,7 @@
 		let url = "/gimmedata"
 		let data = { code:getCookie("sessionId") }
 		$.post(url,data, (data, status) => {
-			let info = JSON.parse(data);
+			let info = JSON.parse(data).info;
 			fetch("https://discord.com/api/users/@me", {
 						headers: {
 							authorization: `${info.token_type} ${info.access_token}`,
@@ -89,13 +89,39 @@
 						live()
 					});
 		})
+		let url2 = "/cfg"
+		let data2 = {code:"template"}
+		var cfgtemplate = {};
+		var allOptions = []
+		$.post(url2,data2, (data, status) => {
+			cfgtemplate = JSON.parse(data)
+		}).then(function() {
+			
+			for(key in cfgtemplate) {
+				let keyx = cfgtemplate[key]
+				if (typeof keyx == "object") {
+					for (keyxy in keyx) {
+						let keyxyx = cfgtemplate[key][keyxy]
+						if(typeof keyxyx == "object" && keyxy != "owner") {
+							for (keyxyxy in keyxyx) {
+								allOptions.push(key + "." + keyxy + "." + keyxyxy)
+							}
+						} else {
+							allOptions.push(key + "." + keyxy);
+						}
+						
+					}
+				} else {
+					allOptions.push(key);
+				}
+			}
+			console.log(allOptions)
+		})
 		function live() {
-			console.log(user)
 			if(user.premium_type == 2) {
 				document.getElementById("username").innerHTML = `${user.username}#${user.discriminator}\n${user.id}<img id="nitroBadge" src="https://discord.com/assets/386884eecd36164487505ddfbac35a9d.svg" class="">`
 			} else {
 				if(user.premium_type == 1) {
-
 					document.getElementById("username").innerHTML = `${user.username}#${user.discriminator}\n${user.id}\nNitro Classic`
 				} else {
 
@@ -107,8 +133,15 @@
 			document.getElementById("userid").innerHTML = `` //future proofing with the string and not just variable lol (lazy) 
 			document.getElementById("loggedIn").innerHTML = `Hi, ${user.username}#${user.discriminator}!` 
 			document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
-			new stringConfig("pp", "counting.channelName");
-			new booleanConfig(true, "counting.enabled");
+			for (let key in allOptions) {
+				console.log("key: " + allOptions[key]);
+				$.post("/get",`code=${getCookie("sessionId")}=${allOptions[key]}`, (data, status) => {
+					//let info = JSON.parse(data);
+					console.log(data);
+				})
+			}
+			//new stringConfig("pp", "counting.channelName");
+			//new booleanConfig(true, "counting.enabled");
 		}
 	</script>
 </html>

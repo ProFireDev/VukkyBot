@@ -3,6 +3,7 @@ const fs = require("fs");
 const url = require("url");
 const fetch = require("node-fetch");
 const config = require("./dashboard/static/dashboard.json");
+const api = require("./utilities/config");
 const port = config.port;
 require("dotenv").config();
 
@@ -81,8 +82,6 @@ http.createServer((req, res) => {
 				res.end();
 			} else {
 
-
-
 				fs.readFile(`${__dirname }/dashboard/static/${req.url}`, function (err,data) {
 					if (err) {
 						res.writeHead(404);
@@ -92,10 +91,11 @@ http.createServer((req, res) => {
 					res.writeHead(200);
 					res.end(data);
 				});
+				
 			}
 		}
 	} else {
-		console.log(req);
+		//console.log(req);
 		if(req.url == "/gimmedata") {
 			let body = "";
 			req.on("data", chunk => {
@@ -115,9 +115,10 @@ http.createServer((req, res) => {
 			req.on("end", () => {
 				let sid = decodeReq(body);
 				if(sessions[sid].active) {
-					console.log("valid set request!");
+					res.end();
+				} else {
+					res.end("403");
 				}
-				res.end();
 			});
 		}
 		
@@ -129,16 +130,27 @@ http.createServer((req, res) => {
 			});
 			req.on("end", () => {
 				let sid = decodeReq(body);
+				let requestedOption = body.split("=")[2];
+				requestedOption = api.get(requestedOption);
 				if(sessions[sid].active) {
-					console.log("valid set request!");
+					res.end(requestedOption);
+				} else {
+					res.end("403");
 				}
-				res.end();
 			});
+		} else {
+			if(req.url == "/cfg") {
+				let body = "";
+				req.on("data", chunk => {
+					body += chunk.toString(); // convert Buffer to string
+				});
+				req.on("end", () => {
+					let sid = decodeReq(body);
+					res.end(fs.readFileSync("./config.json")); //send them the vukkybot config to use as a template for all existing options
+				});
+			}
 		}
 	}
-	res.on("close", args => {
-		console.log("disconnect! " + args);
-	});
 })
 	.listen(port);
 function isValidUser(user) {
