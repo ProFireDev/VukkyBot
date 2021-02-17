@@ -8,3 +8,7 @@ async function tester() {
 	
 }
 tester();
+var ipcountry = require("./utilities/ipcountry");
+
+ipcountry.getCountry("84.240.100.113")
+	.then(countryCode => console.log(countryCode));
