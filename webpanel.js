@@ -131,12 +131,17 @@ http.createServer((req, res) => {
 			req.on("end", () => {
 				let sid = decodeReq(body);
 				let requestedOption = body.split("=")[2];
-				requestedOption = api.get(requestedOption);
-				if(sessions[sid].active) {
-					res.end(requestedOption);
-				} else {
-					res.end("403");
-				}
+				api.get(requestedOption).then(data => {
+					if(sessions[sid].active) {
+						if (requestedOption != "misc.owner") {
+							res.end(data.toString());
+						} else {
+							res.end(JSON.stringify(data));
+						}
+					} else {
+						res.end("403");
+					}
+				});
 			});
 		} else {
 			if(req.url == "/cfg") {
@@ -145,7 +150,7 @@ http.createServer((req, res) => {
 					body += chunk.toString(); // convert Buffer to string
 				});
 				req.on("end", () => {
-					let sid = decodeReq(body);
+					//let sid = decodeReq(body);
 					res.end(fs.readFileSync("./config.json")); //send them the vukkybot config to use as a template for all existing options
 				});
 			}

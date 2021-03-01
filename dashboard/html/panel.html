@@ -6,11 +6,17 @@
 		<link rel="stylesheet" href="tailwind.css">
 	</head>
 	<body>
+		<div class="table-row-group">
 		<div class="bg-gray-900 w-64 rounded-full h-20 m-8 flex whitespace-pre-line">
 			<img id="avatar" class="rounded-full align-middle h-20">
 			<p class="text-white align-middle m-auto" id="username">Loading...</p>
 			<p class="text-white align-middle m-auto" id="userid">Loading...</p>
 		</div>
+		<div class="inline float-right">
+			<button class="button button-blue text-2xl font-bold inline float-right px-10">Save Changes</button>
+			<button class="button button-blue text-2xl font-bold inline float-right px-10">Log out</button>
+		</div>
+	</div>
 		<h1 id="loggedIn" class="text-3xl font-bold text-white">Loading...</h1>  
 		<div class="w-full flex flex-wrap whitespace-pre-line" id="options">
 		
@@ -19,11 +25,18 @@
 	</body>
 	<script>
 
+		class intConfig {
+			constructor(currentValue, configName) {
+				this.currentValue = currentValue;
+				this.configName = configName;
+				document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="number" class="text-black" value="${currentValue}" onchange="updateCfg(this)"></input></div>`
+			}
+		}
 		class stringConfig {
 			constructor(currentValue, configName) {
 				this.currentValue = currentValue;
 				this.configName = configName;
-				document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="text" class="text-black" value="${currentValue}"></input></div>`
+				document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="text" class="text-black" value="${currentValue}" onchange="updateCfg(this)"></input></div>`
 			}
 		}
 		class booleanConfig {
@@ -31,12 +44,15 @@
 				this.currentValue = currentValue;
 				this.configName = configName;
 				if(currentValue) {
-					document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="checkbox" class="text-black w-5 h-5" checked></input></div>`
+					document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="checkbox" class="text-black w-5 h-5" checked onchange="updateCfg(this)"></input></div>`
 				} else {
-					console.log("haha no1")
-					document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="checkbox" class="text-black w-5 h-5"></input></div>`
+					document.getElementById("options").innerHTML += `<div class=" m-5 bg-gray-900 w-80 rounded-full h-20 whitespace-pre-line"><p>${configName}</p><br/><input type="checkbox" class="text-black w-5 h-5" onchange="updateCfg(this)"></input></div>`
 				}
 			}
+		}
+
+		function updateCfg(updated) {
+			console.log(updated)
 		}
 
 		function getQueryVariable(variable) {
@@ -134,14 +150,33 @@
 			document.getElementById("loggedIn").innerHTML = `Hi, ${user.username}#${user.discriminator}!` 
 			document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
 			for (let key in allOptions) {
-				console.log("key: " + allOptions[key]);
+				//console.log("key: " + allOptions[key]);
 				$.post("/get",`code=${getCookie("sessionId")}=${allOptions[key]}`, (data, status) => {
 					//let info = JSON.parse(data);
-					console.log(data);
+					console.log(allOptions[key] + ":" + data);
+					if(allOptions[key] != "misc.owner") {
+						if(!isNaN(parseInt(data))) {
+							new intConfig(data, allOptions[key])
+						} else {
+							if (typeof data == "string") {
+								if (data == "true" || data == "false") {
+									console.log(data)
+									new booleanConfig((data == "true"), allOptions[key])
+								} else {
+
+									new stringConfig(data, allOptions[key])
+								}
+							} else {
+								if (typeof data == "boolean") {
+									new booleanConfig(data, allOptions[key])
+								}
+							}
+						}
+					}
 				})
 			}
 			//new stringConfig("pp", "counting.channelName");
-			//new booleanConfig(true, "counting.enabled");
+			new booleanConfig(false, "pisssssssssssssssssss");
 		}
 	</script>
 </html>
